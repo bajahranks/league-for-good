@@ -18,7 +18,8 @@ const createLeague = (req, res) => {
 			email: req.user.email,
 			role: roles.getOwnerRole(),
 			teams: []
-		}]
+		}],
+		archived: false
 	});
 
 	newLeague.save()
@@ -39,22 +40,28 @@ const fetchLeagueDetails = (req, res) => {
 	const fetchSeasons = Seasons.find({ leagueId })
 		.sort({ endDate: 1 });
 	const fetchTeams = Teams.find({ leagueId });
-	const fetchStaff = League.findOne({ _id: leagueId })
-				.select({ _id: 0, staff: 1});
+	const fetchLeague = League.findOne({ _id: leagueId })
+		.select({ _id: 0, staff: 1, archived: 1});
 
 	Promise.all([
 		fetchSeasons.exec(),
 		fetchTeams.exec(),
 		fetchPlayers.exec(),
-		fetchStaff.exec()
+		fetchLeague.exec()
 	])
-	.then(([seasons, teams, players, league]) =>
-		res.send({ teams, seasons, players, staff: league.staff })
-	);
+	.then(([seasons, teams, players, league]) => {
+		res.send({
+			teams,
+			seasons,
+			players,
+			staff: league.staff,
+			archived: league.archived
+		});
+	});
 
 };
 
-
+// remove this because we're not allowing complete deletion?
 const deleteLeague = (req, res) => {
 	const { leagueId } = req.params;
 
@@ -65,9 +72,18 @@ const deleteLeague = (req, res) => {
 		.catch( err => { throw err; });
 };
 
+const updateLeague = (req, res) => {
+	const query = { _id: req.params.leagueId };
+	League.update(query, req.body, {new: true, upsert: true})
+		.exec()
+		.then(() => res.send(req.body))
+		.catch(error => res.status(500).json({ error: error}));
+};
+
 Router.route('/create').post(createLeague);
 Router.route('/remove/:leagueId').delete(deleteLeague);
 Router.route('/fetch/:leagueId').get(fetchLeagueDetails);
+Router.route('/update/:leagueId').put(updateLeague);
 
 
 module.exports = Router;

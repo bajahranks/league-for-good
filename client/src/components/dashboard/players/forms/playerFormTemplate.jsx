@@ -6,7 +6,7 @@ import { TextField, SelectField} from 'redux-form-material-ui';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import { getFormVals } from './playerFormData.selector';
-import { openSnackbar } from '../../../../actions/index';
+// import { openSnackbar } from '../../../../actions/index';
 import { cssContent, cssDashboard } from '../../../styles';
 import validate from './utils/addPlayerFormValidation';
 
@@ -47,20 +47,22 @@ let PlayerFormTemplate = props => {
 					<Field
 						component={TextField}
 						floatingLabelText='Phone number'
-						hintText='Phone number'
+						hintText='Example: 1-555-555-5555'
 						name='phoneNum'
 					/>
 				</div>
 				<div style={cssDashboard.formRow}>
 					<Field
 						component={TextField}
-						floatingLabelText='Address'
+						floatingLabelStyle={cssDashboard.formRequired}
+						floatingLabelText='Address*'
 						hintText='Address'
 						name='address.street'
 					/>
 					<Field
 						component={TextField}
-						floatingLabelText='City'
+						floatingLabelStyle={cssDashboard.formRequired}
+						floatingLabelText='City*'
 						hintText='City'
 						name='address.city'
 					/>
@@ -68,13 +70,15 @@ let PlayerFormTemplate = props => {
 				<div style={cssDashboard.formRow}>
 					<Field
 						component={TextField}
-						floatingLabelText='State'
+						floatingLabelStyle={cssDashboard.formRequired}
+						floatingLabelText='State*'
 						hintText='State'
 						name='address.state'
 					/>
 					<Field
 						component={TextField}
-						floatingLabelText='Country'
+            floatingLabelStyle={cssDashboard.formRequired}
+						floatingLabelText='Country*'
 						hintText='Country'
 						name='address.country'
 					/>
@@ -143,6 +147,10 @@ PlayerFormTemplate.propTypes = {
 const formVals = getFormVals();
 
 function mapStateToProps(state, ownProps) {
+	// Getting the users role
+	const email = state.auth.user.email;
+	const staff = state.settings.staff;
+	const user = staff.find(staffPerson => staffPerson.email === email);
 	// flag for rendering props relative to Update form or Add player form
 	const { formName, formAction, title } = ownProps;
 	const { initialValues, teams } = formVals(state, ownProps);
@@ -151,13 +159,14 @@ function mapStateToProps(state, ownProps) {
 		initialValues,
 		onSubmit: formAction,
 		teams,
-		title: title
+		title: title,
+		isAdmin: user.role === 'Administrator' ? true : false
 	};
 }
 
 PlayerFormTemplate = reduxForm({
-	validate,
-	onSubmitSuccess: openSnackbar
+	validate
+	// onSubmitSuccess: openSnack
 })(PlayerFormTemplate);
 
 export default connect(mapStateToProps)(PlayerFormTemplate);

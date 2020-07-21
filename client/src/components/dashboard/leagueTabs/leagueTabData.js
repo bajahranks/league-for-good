@@ -3,9 +3,11 @@ import React from 'react';
 import AddIcon from 'material-ui/svg-icons/content/add';
 import AddPersonIcon from 'material-ui/svg-icons/social/person-add';
 // import DeleteForeverIcon from 'material-ui/svg-icons/action/delete-forever';
+import ModeEditIcon from 'material-ui/svg-icons/editor/mode-edit';
 import EmailIcon from 'material-ui/svg-icons/communication/email';
 import AssignmentIcon from 'material-ui/svg-icons/action/assignment';
 import ListIcon from 'material-ui/svg-icons/action/view-list';
+import ArchiveIcon from 'material-ui/svg-icons/content/archive';
 // import EventIcon from 'material-ui/svg-icons/action/event';
 
 import * as LINK from '../../routes';
@@ -86,6 +88,18 @@ const settingsLinks = [
 		label: 'AddStaff',
 		icon: <AddPersonIcon />,
 		url: LINK.SETTINGS_ADD_STAFF_FORM
+	},
+	{
+		description: 'Edit League Name',
+		label: 'EditLeague',
+		icon: <ModeEditIcon />,
+		url: LINK.SETTINGS_EDIT_LEAGUE_NAME
+	},
+	{
+		description: 'Archive League',
+		label: 'ArchiveLeague',
+		icon: <ArchiveIcon />,
+		url: LINK.SETTINGS_EDIT_ARCHIVE_LEAGUE
 	}
 //	{
 //		description: 'Delete your league.',

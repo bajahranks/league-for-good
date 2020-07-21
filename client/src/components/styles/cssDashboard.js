@@ -16,6 +16,9 @@ export const cssDashboard = {
 	tabs: {
 		inkBar: {
 			zIndex: 999
+		},
+		tab: {
+			height: '48px'
 		}
 	},
 	title: {
@@ -135,6 +138,14 @@ export const cssDashboard = {
 	players: {
 		ul: {
 			listStyleType: 'none'
+		},
+		title: {
+			margin: '0px 0px 5px 20px',
+			color: theme.textColor
+		},
+		details: {
+			margin: '0px 0px 0px 40px',
+			color: theme.textColor
 		}
 	},
 	// custom css in the settings tab
@@ -169,6 +180,14 @@ export const cssDashboard = {
 					padding: '0px',
 					textAlign: 'left',
 					float: 'right'
+				}
+			},
+			archive: {
+				label: {
+					width: '250px'
+				},
+				checkboxDiv: {
+					marginLeft: '20px'
 				}
 			}
 		}

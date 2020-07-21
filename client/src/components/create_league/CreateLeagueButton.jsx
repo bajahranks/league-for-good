@@ -1,34 +1,29 @@
+/* eslint-disable react/no-multi-comp */
 import React from 'react';
 import PropTypes from 'prop-types';
 import FlatButton from 'material-ui/FlatButton';
 
 import { cssCreateLeague } from '../styles';
+import CreateLeagueIcon from './CreateLeagueIcon.jsx';
 
-// Icon Component for the button
-const CreateLeagueIcon = (props) => (
-	<img src={props.icon} style={cssCreateLeague.sportIcon} />
-);
-
-CreateLeagueIcon.propTypes = {
-	icon: PropTypes.string
+const CreateLeagueButton = (props) => {
+	const { active, icon, label, onClick } = props;
+	return (
+		<FlatButton
+			backgroundColor={active ?
+				cssCreateLeague.sportButton.active :
+				cssCreateLeague.sportButton.inactive}
+			disableTouchRipple={true}
+			hoverColor={active ?
+				cssCreateLeague.sportButton.active :
+				cssCreateLeague.sportButton.hover}
+			icon={<CreateLeagueIcon icon={icon} />}
+			label={label}
+			onClick={() => onClick(label)}
+			style={cssCreateLeague.sportButton.style}
+		/>
+	);
 };
-
-// League Button with icon for create league form
-const CreateLeagueButton = (props) => (
-	<FlatButton
-		backgroundColor={props.active ?
-			cssCreateLeague.sportButton.active :
-			cssCreateLeague.sportButton.inactive}
-		disableTouchRipple={true}
-		hoverColor={props.active ?
-			cssCreateLeague.sportButton.active :
-			cssCreateLeague.sportButton.hover}
-		icon={<CreateLeagueIcon icon={props.icon} />}
-		label={props.label}
-		onTouchTap={() => props.onClick(props.label)}
-		style={cssCreateLeague.sportButton.style}
-	/>
-);
 
 CreateLeagueButton.propTypes = {
 	active: PropTypes.bool,
